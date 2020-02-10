@@ -1,5 +1,19 @@
 let game, scores;
+let score = 0;
 
+$.ajax({
+  type: 'GET',
+  url: '/scores',
+  success: function (data) {
+    // game = new Phaser.Game(gameConfig);
+    scores = data;
+    // console.log(scores)
+    
+  },
+  error: function (xhr) {
+    console.log(xhr);
+  }
+});
 
 // global game options
 let gameOptions = {
@@ -66,6 +80,9 @@ window.onload = function () {
   window.addEventListener("resize", resize, false);
 }
 
+
+
+
 // preloadGame scene
 class preloadGame extends Phaser.Scene {
   constructor() {
@@ -101,6 +118,7 @@ class preloadGame extends Phaser.Scene {
     // leaderboard
     this.load.bitmapFont('arcade', 'assets/arcade.png', 'assets/arcade.xml');
   }
+
   create() {
 
     // setting player animation
@@ -146,7 +164,6 @@ class Highscore extends Phaser.Scene {
   constructor() {
     super('Highscore');
   }
-
   create() {
 
     this.add.bitmapText(100, 110, 'arcade', 'RANK  SCORE   NAME').setTint(0xffffff);
@@ -158,6 +175,12 @@ class Highscore extends Phaser.Scene {
         this.add.bitmapText(100, 160 + 50 * i, 'arcade', ` ${i}      0    ---`).setTint(0xffffff);
       }
     }
+
+    setTimeout(() => {
+      this.scene.start("PlayGame");
+    }, 2000)
+
+
   }
 }
 
@@ -168,6 +191,14 @@ class playGame extends Phaser.Scene {
     super("PlayGame");
   }
   create() {
+
+    let scoreText = this.add.text(16, 16, 'score: ' + score, { fontSize: '32px', fill: '#000' });
+
+    function collectCoin (player) {
+      //  Add and update the score
+      score += 10;
+      scoreText.text = 'Score: ' + score;
+    }
 
     // group with all active mountains.
     this.mountainGroup = this.add.group();
@@ -268,6 +299,7 @@ class playGame extends Phaser.Scene {
         onComplete: function () {
           this.coinGroup.killAndHide(coin);
           this.coinGroup.remove(coin);
+          collectCoin(this);
         }
       });
 
@@ -405,13 +437,18 @@ class playGame extends Phaser.Scene {
 
     // game over
     if (this.player.y > game.config.height) {
-      this.dying = True
-      this.scene.start("PlayGame");
-    }
+      
+      // this.dying = True
+      // this.scene.start("PlayGame");
+      // window.location.replace("http://localhost:3000/scores")
 
-    if (this.dying) {
+      score = 0;
       this.scene.start("Highscore");
     }
+
+    // if (this.dying) {
+    //   this.scene.start("Highscore");
+    // }
 
     this.player.x = gameOptions.playerStartPosition;
 
@@ -488,16 +525,3 @@ function resize() {
     canvas.style.height = windowHeight + "px";
   }
 }
-
-
-$.ajax({
-  type: 'GET',
-  url: '/scores',
-  success: function (data) {
-    game = new Phaser.Game(config);
-    scores = data;
-  },
-  error: function (xhr) {
-    console.log(xhr);
-  }
-});
