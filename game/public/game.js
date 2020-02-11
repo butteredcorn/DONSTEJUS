@@ -4,9 +4,9 @@ $.ajax({
 	type: 'GET',
 	url: '/scores',
 	success: function(data) {
-		// game = new Phaser.Game(gameConfig);
+		 //game = new Phaser.Game(gameConfig);
 		scores = data;
-		// console.log(scores)
+		console.log(scores)
 	},
 	error: function(xhr) {
 		console.log(xhr);
