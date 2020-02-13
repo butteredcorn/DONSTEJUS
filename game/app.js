@@ -30,8 +30,25 @@ const server = require('http').Server(app);
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://04c45c80d96840b58988cb9771acd41d@sentry.io/2300829' });
 
+//see: https://docs.sentry.io/enriching-error-data/context/?platform=javascript
+// Users consist of a few key pieces of information which are used to construct a unique identity in Sentry.
+// Each of these is optional, but one must be present in order for the user to be captured:
+
+Sentry.configureScope(function(scope) {
+  scope.setUser({"email": "john.doe@example.com"});
+});
+
+// Sentry.configureScope(function(scope) {
+//   scope.setTag("page_locale", "de-at");
+// });
+
+
+
+
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+
+
 
 // update express settings
 app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
