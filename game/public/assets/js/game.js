@@ -47,6 +47,7 @@ $.ajax({
   url: '/scores',
   success: function (data) {
     scores = data;
+    
   },
   error: function (xhr) {
     console.log(xhr);
@@ -88,7 +89,7 @@ let gameOptions = {
   playerStartPosition: 200,
 
   // consecutive jumps allowed
-  jumps: 2,
+  jumps: 3,
 
   // % of probability a coin appears on the platform
   coinPercent: 25,
