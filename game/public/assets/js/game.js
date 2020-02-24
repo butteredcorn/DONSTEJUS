@@ -3,12 +3,19 @@ let playerScore = 0;
 let start = new Date();
 let scoreText;
 let currentPlayerHighScore = 0;
+const jwt = request('jsonwebtoken');
+console.log(jwt.parse('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlM2UwMTk3YjcxYmJlNTA4OGJiMDdkYyIsImVtYWlsIjoidGVzdCJ9LCJpYXQiOjE1ODE2MjY1MjgsImV4cCI6MTU4MTYyNjgyOH0.yfYA3j-ziWlt1McUlOlK8FvqQ5uQjOeYhksF7yFY3UQ; refreshJwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlM2UwMTk3YjcxYmJlNTA4OGJiMDdkYyIsImVtYWlsIjoidGVzdCJ9LCJpYXQiOjE1ODE2MjY1MjgsImV4cCI6MTU4MTcxMjkyOH0.ghlK9jkYe-fzTzpqd432dbpxx7r2EkPljfgjjzEg5vM'))
+
+
+const a = document.cookie;
+console.log(a);
 
 $.ajax({
   type: 'GET',
   url: '/scores',
   success: function (data) {
     scores = data;
+    
   },
   error: function (xhr) {
     console.log(xhr);
@@ -50,7 +57,7 @@ let gameOptions = {
   playerStartPosition: 200,
 
   // consecutive jumps allowed
-  jumps: 2,
+  jumps: 3,
 
   // % of probability a coin appears on the platform
   coinPercent: 25,
