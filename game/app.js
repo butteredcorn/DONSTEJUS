@@ -10,6 +10,7 @@ const passport = require('passport');
 const routes = require('./routes/main');
 const secureRoutes = require('./routes/secure');
 const passwordRoutes = require('./routes/password');
+const jwt = require("jsonwebtoken");
 
 // setup mongo connection
 const uri = process.env.MONGO_CONNECTION_URL;
@@ -51,16 +52,21 @@ app.use(Sentry.Handlers.requestHandler());
 
 
 // update express settings
-app.use(bodyParser.urlencoded({ extended: false })); // parse application/x-www-form-urlencoded
-app.use(bodyParser.json()); // parse application/json
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cookieParser());
 
 // require passport auth
 require('./auth/auth');
 
-// All controllers (webpage urls essentially) should be here
 
+// All controllers (webpage urls essentially) should be here
 app.get('/game.html', passport.authenticate('jwt', { session : false }), function (req, res) {
+  const cookie = req.cookies["jwt"];
+  const decoded = jwt.decode(cookie);
+  const { _id, email } = decoded.user
+  console.log(_id, email)
+
   res.sendFile(__dirname + '/public/game.html');
 });
 
@@ -87,11 +93,8 @@ app.use((req, res, next) => {
   res.status(404).json({ message: '404 - Not Found' });
 });
 
-
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
-
-
 
 // Optional fallthrough error handler
 app.use(function onError(err, req, res, next) {

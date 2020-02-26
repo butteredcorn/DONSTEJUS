@@ -3,12 +3,44 @@ let playerScore = 0;
 let start = new Date();
 let scoreText;
 let currentPlayerHighScore = 0;
-const jwt = request('jsonwebtoken');
-console.log(jwt.parse('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlM2UwMTk3YjcxYmJlNTA4OGJiMDdkYyIsImVtYWlsIjoidGVzdCJ9LCJpYXQiOjE1ODE2MjY1MjgsImV4cCI6MTU4MTYyNjgyOH0.yfYA3j-ziWlt1McUlOlK8FvqQ5uQjOeYhksF7yFY3UQ; refreshJwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjVlM2UwMTk3YjcxYmJlNTA4OGJiMDdkYyIsImVtYWlsIjoidGVzdCJ9LCJpYXQiOjE1ODE2MjY1MjgsImV4cCI6MTU4MTcxMjkyOH0.ghlK9jkYe-fzTzpqd432dbpxx7r2EkPljfgjjzEg5vM'))
 
 
-const a = document.cookie;
-console.log(a);
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function parseJwt(token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+};
+
+
+const val = getCookie("jwt");
+const decodedVal = parseJwt(val);
+console.log(decodedVal);
+const playerEmail = decodedVal.user.email;
+const playerID = decodedVal.user._id;
+console.log(playerEmail);
+console.log(playerID);
+
+
 
 $.ajax({
   type: 'GET',
@@ -469,7 +501,7 @@ class playGame extends Phaser.Scene {
         dataType: 'json',
         data: {
 			//replace with player email
-          email: "test",
+          email: playerEmail,
           score: currentPlayerHighScore
         },
         success: function (data) {
