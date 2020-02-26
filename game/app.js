@@ -31,25 +31,8 @@ const server = require('http').Server(app);
 const Sentry = require('@sentry/node');
 Sentry.init({ dsn: 'https://04c45c80d96840b58988cb9771acd41d@sentry.io/2300829' });
 
-//see: https://docs.sentry.io/enriching-error-data/context/?platform=javascript
-// Users consist of a few key pieces of information which are used to construct a unique identity in Sentry.
-// Each of these is optional, but one must be present in order for the user to be captured:
-
-Sentry.configureScope(function(scope) {
-  scope.setUser({"email": "john.doe@example.com"});
-});
-
-// Sentry.configureScope(function(scope) {
-//   scope.setTag("page_locale", "de-at");
-// });
-
-
-
-
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
-
-
 
 // update express settings
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -67,6 +50,12 @@ app.get('/game.html', passport.authenticate('jwt', { session : false }), functio
   const { _id, email } = decoded.user
   console.log(_id, email)
 
+  Sentry.configureScope(function(scope) {
+    scope.setUser({'email': email});
+    scope.setTag("game_html", "error with sending game.html");
+    scope.setLevel('warning');
+  });
+
   res.sendFile(__dirname + '/public/game.html');
 });
 
@@ -83,10 +72,44 @@ app.use('/', passport.authenticate('jwt', { session : false }), secureRoutes);
 
 //this is the test endpoint
 app.get('/debug-sentry', function mainHandler(req, res) {
+  const cookie = req.cookies["jwt"];
+  const decoded = jwt.decode(cookie);
+  const { _id, email } = decoded.user
+
+  Sentry.configureScope(function(scope) {
+    scope.setUser({'email': email});
+    scope.setTag("test_error_tag", "hello world!");
+    scope.setLevel('warning');
+  });
   throw new Error('My first Sentry error!');
 });
 
 //this is where all endpoints should end, after here is the Sentry.io error handler 
+
+//see: https://docs.sentry.io/enriching-error-data/context/?platform=javascript
+// Users consist of a few key pieces of information which are used to construct a unique identity in Sentry.
+// Each of these is optional, but one must be present in order for the user to be captured:
+
+
+
+// //jwt as follows: const { _id, email } = decoded.user
+// Sentry.configureScope(function(scope) {
+//   scope.setUser({'email': email, 'id': _id});
+//   scope.setTag("page_locale", "de-at");
+//   scope.setLevel('warning');
+// });
+
+// Sentry.configureScope(function(scope) {
+//   scope.setTag("page_locale", "de-at");
+//   scope.setLevel('warning');
+// });
+
+// Sentry.configureScope(function(scope) {
+  
+// });
+
+
+
 
 // catch all other routes
 app.use((req, res, next) => {
@@ -122,6 +145,12 @@ app.use((err, req, res, next) => {
   console.log(err.message);
   res.status(err.status || 500).json({ error: err.message });
 });
+
+
+
+module.exports = {
+  app
+}
 
 // have the server start listening on the provided port
 app.listen(process.env.PORT || 3000, () => {
