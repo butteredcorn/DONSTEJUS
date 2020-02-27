@@ -28,6 +28,15 @@ smtpTransport.use('compile', hbs(handlebarsOptions));
 
 const router = express.Router();
 
+/**
+ * @api {post} /forgot-password
+ * @apiSuccess {Object[]} jwt object
+ * @apiSuccess {body} the object contains user email and id
+ * @apiSuccess {token} generated token
+ * @apiSuccess {email} user email
+ * @apiSuccess {data} data to be sent to smtpTransport
+ * 
+ */
 router.post('/forgot-password', asyncMiddleware(async (req, res, next) => {
   const { email } = req.body;
   const user = await UserModel.findOne({ email });
@@ -58,7 +67,27 @@ router.post('/forgot-password', asyncMiddleware(async (req, res, next) => {
 
   res.status(200).json({ message: 'An email has been sent to your email. Password reset link is only valid for 10 minutes.' });
 }));
-
+/**
+ * @api {post} /reset-password
+ * @apiSuccess {Object[]} jwt object
+ * @apiSuccess {refreshToken} token in the request
+ * @apiSuccess {token} generated token
+ * @apiSuccessExample {json} Success
+ *  HTTP/1.1 200 OK
+ *    [{
+ *      "message: 'password updated'""
+ *    }]
+ *       or
+ *  HTTP/1.1 400 Bad Request
+ *    [{
+ *      "message: 'invalid token"
+ *    }]
+ *      or
+ *  HTTP/1.1 400 Bad Request
+ *    [{
+ *      "message: 'passwords do not match"
+ *    }]
+ */
 router.post('/reset-password', asyncMiddleware(async (req, res, next) => {
   const user = await UserModel.findOne({ resetToken: req.body.token, resetTokenExp: { $gt: Date.now() } });
   if (!user) {
