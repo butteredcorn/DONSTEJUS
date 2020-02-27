@@ -24,7 +24,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/main.js",
+    "filename": "./routes/main.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "name": "GetStatus"
@@ -61,7 +61,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/main.js",
+    "filename": "./routes/main.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "name": "PostLogin"
@@ -105,7 +105,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/main.js",
+    "filename": "./routes/main.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "name": "PostLogout"
@@ -135,7 +135,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/main.js",
+    "filename": "./routes/main.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "name": "PostSignup"
@@ -165,7 +165,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/main.js",
+    "filename": "./routes/main.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "name": "PostSignup"
@@ -209,7 +209,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/main.js",
+    "filename": "./routes/main.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/main.js",
     "name": "PostToken"
@@ -260,7 +260,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./game/routes/password.js",
+    "filename": "./routes/password.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/password.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/password.js",
     "name": "PostForgotPassword"
@@ -304,7 +304,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/password.js",
+    "filename": "./routes/password.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/password.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/password.js",
     "name": "PostResetPassword"
@@ -355,7 +355,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./game/routes/secure.js",
+    "filename": "./routes/secure.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/secure.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/secure.js",
     "name": "PostSubmitScore"
@@ -406,7 +406,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./game/routes/secure.js",
+    "filename": "./routes/secure.js",
     "group": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/secure.js",
     "groupTitle": "/Users/sc/Desktop/agile/DONSTEJUS/game/routes/secure.js",
     "name": "PostSubmitScore"
@@ -444,7 +444,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./game/app.js",
+    "filename": "./app.js",
     "groupTitle": "game.html",
     "name": "GetGameHtml"
   },
@@ -474,7 +474,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./game/app.js",
+    "filename": "./app.js",
     "groupTitle": "game.html",
     "name": "GetGameHtml"
   },
@@ -484,7 +484,7 @@ define({ "api": [
     "title": "",
     "group": "index.html",
     "version": "0.0.0",
-    "filename": "./game/app.js",
+    "filename": "./app.js",
     "groupTitle": "index.html",
     "name": "GetIndexHtml"
   }
