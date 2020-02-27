@@ -22,7 +22,6 @@ Create an account and log in to start the game.
 <li>App is hosted on port 3000</li>
 <li>For docs, go inside APIdoc folder and open index.html</li>
 <li>The password rest option is not configured and wil not work at this time.</li>
-<li>Trello Board [Here]</li>
 </ul>
 
 ### Feature List
@@ -32,5 +31,7 @@ Create an account and log in to start the game.
 <li>Sentry.IO tagging</li>
 <li>APIdoc.js</li>
 </ul>
+
+Trello Board [Here]
 
 [Here]: https://trello.com/b/I2EUVkA2/agile-steven-don-justin
