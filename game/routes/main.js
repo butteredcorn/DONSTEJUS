@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken');
 const tokenList = {};
 const router = express.Router();
 
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'https://04c45c80d96840b58988cb9771acd41d@sentry.io/2300829' });
+
 /**
  * @api {get} /status
  * @apiSuccess {status} status 200
@@ -95,6 +98,12 @@ router.post('/login', async (req, res, next) => {
 					_id: user._id,
 				};
 
+				Sentry.configureScope(function(scope) {
+					scope.setTag("login", "error with login");
+					scope.setLevel('error');
+					//throw new Error("thing.") //confirmed to work
+				  })
+
 				//Send back the token to the user
 				return res.status(200).json({ token, refreshToken });
 			});
@@ -153,6 +162,13 @@ router.post('/logout', (req, res) => {
 		res.clearCookie('refreshJwt');
 		res.clearCookie('jwt');
 	}
+
+	Sentry.configureScope(function(scope) {
+		scope.setUser({'email': email});
+		scope.setTag("logout", "error with logout password function");
+		scope.setLevel('error');
+		//throw new Error("thing.") //confirmed to work
+	  })
 
 	res.status(200).json({ message: 'logged out' });
 });

@@ -24,6 +24,14 @@ Sentry.init({ dsn: 'https://04c45c80d96840b58988cb9771acd41d@sentry.io/2300829' 
 router.post('/submit-score', asyncMiddleware(async (req, res, next) => {
   const { email, score } = req.body;
   await UserModel.updateOne({ email }, { highScore: score });
+
+  Sentry.configureScope(function(scope) {
+    scope.setUser({'email': email});
+    scope.setTag("submit-score", "error with submitting scores");
+    scope.setLevel('error');
+    //throw new Error("thing.") //confirmed to work
+  })
+
   await res.status(200).json({ status: `Score submitted. User: ${email} Score: ${score}` });
 }));
 
@@ -50,7 +58,6 @@ router.get('/scores', asyncMiddleware(async (req, res, next) => {
     scope.setTag("scores", "error with updating scores");
     scope.setLevel('error');
     //throw new Error("thing.") //confirmed to work
-    
   })
 
   res.status(200).json(users);

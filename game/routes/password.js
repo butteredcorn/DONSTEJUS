@@ -10,6 +10,10 @@ const UserModel = require('../models/userModel');
 const email = process.env.EMAIL;
 const pass = process.env.PASSWORD;
 
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'https://04c45c80d96840b58988cb9771acd41d@sentry.io/2300829' });
+
+
 const smtpTransport = nodemailer.createTransport({
   service: process.env.EMAIL_PROVIDER,
   auth: {
@@ -65,6 +69,12 @@ router.post('/forgot-password', asyncMiddleware(async (req, res, next) => {
   };
   await smtpTransport.sendMail(data);
 
+  Sentry.configureScope(function(scope) {
+    scope.setTag("forgot password", "error with forgot password function");
+    scope.setLevel('error');
+    //throw new Error("thing.") //confirmed to work
+  })
+
   res.status(200).json({ message: 'An email has been sent to your email. Password reset link is only valid for 10 minutes.' });
 }));
 /**
@@ -97,6 +107,14 @@ router.post('/reset-password', asyncMiddleware(async (req, res, next) => {
 
   // ensure provided password matches verified password
   if (req.body.password !== req.body.verifiedPassword) {
+
+    // create counter, reset counter after successful login or time elapsed
+    // Sentry.configureScope(function(scope) {
+    //   scope.setTag("login-attempt", "error with login attempts");
+    //   scope.setLevel('error');
+    //   //throw new Error("thing.") //confirmed to work
+    // })
+
     res.status(400).json({ 'message': 'passwords do not match' });
     return;
   }
