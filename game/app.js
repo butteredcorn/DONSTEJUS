@@ -1,4 +1,4 @@
-//reads in our .env file and makes those values available as environment variables
+///reads in our .env file and makes those values available as environment variables
 
 require('dotenv').config();
 
